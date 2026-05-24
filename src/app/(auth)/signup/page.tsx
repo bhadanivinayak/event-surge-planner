@@ -48,6 +48,14 @@ export default function SignupPage() {
       return
     }
 
+    // If email confirmation is required, session is null — can't do RLS-protected inserts yet
+    if (!data.session) {
+      toast.success('Check your email to confirm your account, then sign in.')
+      setLoading(false)
+      router.push('/login')
+      return
+    }
+
     if (data.user) {
       const { data: company, error: companyError } = await supabase
         .from('companies')
